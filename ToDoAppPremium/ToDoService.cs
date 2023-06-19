@@ -17,16 +17,16 @@ namespace ToDoAppPremium
 			this._logger = logger;
 		}
 
-		public async Task<IEnumerable<ToDo>> GetToDosAsync()
+		public async Task<IEnumerable<ToDo>> GetToDosAsync(string fromDate)
 		{
-            this._logger.LogInformation("Start ToDoService.GetToDosAsync");
+            this._logger.LogInformation("Start GetToDosAsync");
 			IEnumerable<ToDo>? results = null;
 
             using (var activity = source.StartActivity("ToDoService.GetToDo"))
 			{
 				using(HttpClient client = new HttpClient())
 				{
-					using (var response = await client.GetAsync(BaseUrl + "/todo").ConfigureAwait(false))
+					using (var response = await client.GetAsync(BaseUrl + "/todo?fromDate=" + fromDate).ConfigureAwait(false))
 					{
 						response?.EnsureSuccessStatusCode();
                         results = await response.Content.ReadFromJsonAsync<IEnumerable<ToDo>>().ConfigureAwait(false);
@@ -36,7 +36,7 @@ namespace ToDoAppPremium
 				}
             }
 
-            this._logger.LogInformation("End ToDoService.GetToDosAsync");
+            this._logger.LogInformation("End GetToDosAsync");
 			return results;
         }
 	}

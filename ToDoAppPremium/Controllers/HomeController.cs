@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Sentry;
 using ToDoAppPremium.Models;
 using ToDoBackend;
 
@@ -9,6 +10,8 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ToDoService toDoService;
+
+    private static Random random = new Random();
 
     public HomeController(ToDoService toDoService, ILogger<HomeController> logger)
     {
@@ -36,15 +39,20 @@ public class HomeController : Controller
 
     private async Task<IEnumerable<ToDo>> GetToDosAsync()
     {
+        this._logger.LogInformation("Start GetToDosAsync");
         try
         {
-            return await this.toDoService.GetToDosAsync();
+            var day = random.Next(1, 15);
+            string fromDate = $"06/{day}/2023";
+            var response = await this.toDoService.GetToDosAsync(fromDate);
+            this._logger.LogDebug("End GetToDosAsync");
+            return response;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             this._logger.LogError("An error occur when trying to get todos !");
+            SentrySdk.CaptureException(ex);
             return Enumerable.Empty<ToDo>();
         }
     }
 }
-
