@@ -22,7 +22,9 @@ public class ToDoController : ControllerBase
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
-            this._logger.LogInformation("{0}|Start ToDoController.Get", correlationId);
+            activity?.SetTag("correlationId", correlationId);
+
+            this._logger.LogInformation("{correlationId}|Start ToDoController.Get", correlationId);
             try
             {
                 var fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
@@ -30,7 +32,7 @@ public class ToDoController : ControllerBase
             catch(Exception ex)
             {
                 this._logger.LogError("{correlationId}|Unable to parse the date", correlationId);
-                throw new ArgumentOutOfRangeException("fromDate");
+                throw new InvalidDataException("fromDate");
             }
 
             var results = Enumerable.Range(1, 5).Select(index => new ToDo
@@ -39,7 +41,7 @@ public class ToDoController : ControllerBase
             })
             .ToArray();
 
-            this._logger.LogInformation("{0}|End ToDoController.Get", correlationId);
+            this._logger.LogInformation("{correlationId}|End ToDoController.Get", correlationId);
             return results;
         }
     }

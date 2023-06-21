@@ -53,7 +53,7 @@ public class HomeController : Controller
         catch (Exception ex)
         {
             this._logger.LogError("{0}|An error occur when trying to get todos !", correlationId);
-            SentrySdk.CaptureException(ex);
+            SentrySdk.CaptureException(ex, s => s.SetTag("correlationId", correlationId));
             return Enumerable.Empty<ToDo>();
         }
     }
