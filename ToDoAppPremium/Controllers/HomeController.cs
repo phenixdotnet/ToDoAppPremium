@@ -40,18 +40,18 @@ public class HomeController : Controller
 
     private async Task<IEnumerable<ToDo>> GetToDosAsync(string correlationId)
     {
-        this._logger.LogInformation("{0}|Start GetToDosAsync", correlationId);
+        this._logger.LogInformation("{correlationId}|Start GetToDosAsync", correlationId);
         try
         {
             var day = random.Next(1, 15);
             string fromDate = $"06/{day}/2023";
             var response = await this.toDoService.GetToDosAsync(fromDate, correlationId);
-            this._logger.LogInformation("{0}|End GetToDosAsync", correlationId);
+            this._logger.LogInformation("{correlationId}|End GetToDosAsync", correlationId);
             return response;
         }
         catch (Exception ex)
         {
-            this._logger.LogError("{0}|An error occur when trying to get todos !", correlationId);
+            this._logger.LogError("{correlationId}|An error occur when trying to get todos !", correlationId);
             SentrySdk.CaptureException(ex);
             return Enumerable.Empty<ToDo>();
         }
