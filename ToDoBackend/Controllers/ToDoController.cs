@@ -26,10 +26,10 @@ public class ToDoController : ControllerBase
             {
                 var fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this._logger.LogError("Unable to parse the date");
-                throw new ArgumentOutOfRangeException("fromDate");
+                throw new InvalidDataException("fromDate");
             }
 
             var results = Enumerable.Range(1, 5).Select(index => new ToDo
