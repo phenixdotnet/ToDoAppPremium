@@ -22,8 +22,6 @@ public class ToDoController : ControllerBase
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
-            activity?.SetTag("correlationId", correlationId);
-
             this._logger.LogInformation("{0}|Start ToDoController.Get", correlationId);
             try
             {
@@ -31,7 +29,7 @@ public class ToDoController : ControllerBase
             }
             catch(Exception ex)
             {
-                this._logger.LogError("{0}|Unable to parse the date", correlationId);
+                this._logger.LogError("{correlationId}|Unable to parse the date", correlationId);
                 throw new ArgumentOutOfRangeException("fromDate");
             }
 

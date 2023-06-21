@@ -24,8 +24,6 @@ namespace ToDoAppPremium
 
 			using (var activity = source.StartActivity("ToDoService.GetToDo"))
 			{
-				activity?.SetTag("correlationId", correlationId);
-
 				using (HttpClient client = new HttpClient())
 				{
 					client.DefaultRequestHeaders.Add("correlationId", correlationId);

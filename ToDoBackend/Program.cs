@@ -19,6 +19,7 @@ public class Program
         builder.WebHost.UseSentry(o =>
         {
             o.Dsn = "https://5258989b0ff24bc29e0fb6d03b24e5e5@o4505384980250624.ingest.sentry.io/4505387448336384";
+            o.IncludeActivityData = false;
         });
 
         builder.Services.AddControllers();
