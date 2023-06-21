@@ -15,6 +15,11 @@ public class Program
         // Add services to the container.
         builder.Logging.AddLoki();
 
+        builder.WebHost.UseSentry(o =>
+        {
+            o.Dsn = "https://5258989b0ff24bc29e0fb6d03b24e5e5@o4505384980250624.ingest.sentry.io/4505387448336384";
+        });
+
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -26,14 +31,16 @@ public class Program
                 {
                     o.AddSource(TelemetryConstants.ServiceName)
                      .ConfigureResource(r => r.AddService(TelemetryConstants.ServiceName))
-                     .AddAspNetCoreInstrumentation(option => {
+                     .AddAspNetCoreInstrumentation(option =>
+                     {
                          option.RecordException = false;
                          option.Filter = ExcludeMetricsFilter;
                      });
                     o.AddConsoleExporter(o => o.Targets = ConsoleExporterOutputTargets.Console);
                     o.AddJaegerExporter();
                 })
-                .WithMetrics(o => {
+                .WithMetrics(o =>
+                {
                     o.AddAspNetCoreInstrumentation();
                     o.AddPrometheusExporter();
                 });

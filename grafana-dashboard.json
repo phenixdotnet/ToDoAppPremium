@@ -206,7 +206,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "HTTP requests ToDo requests",
+            "title": "HTTP requests ToDoBackend requests",
             "type": "timeseries"
         },
         {
@@ -292,13 +292,13 @@
         "list": []
     },
     "time": {
-        "from": "now-1h",
+        "from": "now-15m",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "ToDoApp",
     "uid": "c84de24f-25d8-44b1-9e48-133041ea6401",
-    "version": 3,
+    "version": 4,
     "weekStart": ""
 }
