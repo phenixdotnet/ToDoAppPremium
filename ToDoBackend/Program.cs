@@ -13,6 +13,7 @@ public class Program
         builder.Services.Configure<AspNetCoreInstrumentationOptions>(options => options.RecordException = true);
 
         // Add services to the container.
+        builder.Logging.ClearProviders();
         builder.Logging.AddLoki();
 
         builder.WebHost.UseSentry(o =>

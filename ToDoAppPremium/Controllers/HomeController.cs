@@ -45,6 +45,7 @@ public class HomeController : Controller
         {
             var day = random.Next(1, 15);
             string fromDate = $"06/{day}/2023";
+
             var response = await this.toDoService.GetToDosAsync(fromDate, correlationId);
             this._logger.LogInformation("{correlationId}|End GetToDosAsync", correlationId);
             return response;

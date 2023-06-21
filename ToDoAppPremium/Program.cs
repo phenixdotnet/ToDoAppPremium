@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ToDoService>();
 builder.Services.Configure<AspNetCoreInstrumentationOptions>(options => options.RecordException = true);
 
-builder.Logging.AddLoki();
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.WebHost.UseSentry(o => {
@@ -18,14 +16,17 @@ builder.WebHost.UseSentry(o => {
     o.IncludeActivityData = false;
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddLoki();
+
 builder.Services
         .AddOpenTelemetry()
         .WithTracing(o =>
         {
-            o.SetSampler(new TraceIdRatioBasedSampler(1.0))
-             .AddSource(TelemetryConstants.ServiceName)
+            o.AddSource(TelemetryConstants.ServiceName)
              .ConfigureResource(r => r.AddService(TelemetryConstants.ServiceName))
              .AddAspNetCoreInstrumentation(option => option.RecordException = true);
+
             o.AddConsoleExporter(o => o.Targets = ConsoleExporterOutputTargets.Console);
             o.AddJaegerExporter();
         })
