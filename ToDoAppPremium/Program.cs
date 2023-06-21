@@ -15,6 +15,7 @@ builder.Logging.AddLoki();
 builder.Services.AddControllersWithViews();
 builder.WebHost.UseSentry(o => {
     o.Dsn = "https://80c7571e241c4c939dc206bb18859b04@o4505384980250624.ingest.sentry.io/4505384982872064";
+    o.IncludeActivityData = false;
 });
 
 builder.Services
