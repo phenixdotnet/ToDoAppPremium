@@ -45,6 +45,7 @@ public class HomeController : Controller
         {
             var day = random.Next(1, 15);
             string fromDate = $"06/{day}/2023";
+
             var response = await this.toDoService.GetToDosAsync(fromDate, correlationId);
             this._logger.LogInformation("{0}|End GetToDosAsync", correlationId);
             return response;
@@ -52,7 +53,7 @@ public class HomeController : Controller
         catch (Exception ex)
         {
             this._logger.LogError("{0}|An error occur when trying to get todos !", correlationId);
-            SentrySdk.CaptureException(ex);
+            SentrySdk.CaptureException(ex, s => s.SetTag("correlationId", correlationId));
             return Enumerable.Empty<ToDo>();
         }
     }

@@ -18,17 +18,20 @@ public class ToDoController : ControllerBase
     [HttpGet(Name = "GetToDo")]
     public IEnumerable<ToDo> Get(string fromDate)
     {
+        string? correlationId = this.Request.Headers["correlationId"];
+
         using (var activity = source.StartActivity("ToDo.Get"))
         {
-            this._logger.LogInformation("Start ToDoController.Get");
+            activity?.SetTag("correlationId", correlationId);
 
+            this._logger.LogInformation("{0}|Start ToDoController.Get", correlationId);
             try
             {
                 var fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
             }
             catch(Exception ex)
             {
-                this._logger.LogError("Unable to parse the date");
+                this._logger.LogError("{0}|Unable to parse the date", correlationId);
                 throw new ArgumentOutOfRangeException("fromDate");
             }
 
@@ -38,7 +41,7 @@ public class ToDoController : ControllerBase
             })
             .ToArray();
 
-            this._logger.LogInformation("End ToDoController.Get");
+            this._logger.LogInformation("{0}|End ToDoController.Get", correlationId);
             return results;
         }
     }
