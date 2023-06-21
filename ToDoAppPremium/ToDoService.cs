@@ -17,9 +17,9 @@ namespace ToDoAppPremium
 			this._logger = logger;
 		}
 
-		public async Task<IEnumerable<ToDo>> GetToDosAsync(string fromDate)
+		public async Task<IEnumerable<ToDo>> GetToDosAsync(string fromDate, string correlationId)
 		{
-            this._logger.LogInformation("Start GetToDosAsync");
+            this._logger.LogInformation("{0}|Start GetToDosAsync", correlationId);
 			IEnumerable<ToDo>? results = null;
 
             using (var activity = source.StartActivity("ToDoService.GetToDo"))
@@ -36,7 +36,7 @@ namespace ToDoAppPremium
 				}
             }
 
-            this._logger.LogInformation("End GetToDosAsync");
+            this._logger.LogInformation("{0}|End GetToDosAsync", correlationId);
 			return results;
         }
 	}
