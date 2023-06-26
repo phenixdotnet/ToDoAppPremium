@@ -18,9 +18,11 @@ public class ToDoController : ControllerBase
     [HttpGet(Name = "GetToDo")]
     public IEnumerable<ToDo> Get(string fromDate)
     {
+        var correlationId = Guid.NewGuid().ToString();
+
         using (var activity = source.StartActivity("ToDo.Get"))
         {
-            this._logger.LogInformation("Start ToDoController.Get");
+            this._logger.LogInformation("{correlationId}|Start ToDoController.Get", correlationId);
 
             try
             {
@@ -28,7 +30,7 @@ public class ToDoController : ControllerBase
             }
             catch (Exception ex)
             {
-                this._logger.LogError("Unable to parse the date");
+                this._logger.LogError("{correlationId}|Unable to parse the date", correlationId);
                 throw new InvalidDataException("fromDate");
             }
 
@@ -38,7 +40,7 @@ public class ToDoController : ControllerBase
             })
             .ToArray();
 
-            this._logger.LogInformation("End ToDoController.Get");
+            this._logger.LogInformation("{correlationId}|End ToDoController.Get", correlationId);
             return results;
         }
     }

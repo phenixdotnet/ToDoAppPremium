@@ -22,7 +22,8 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> Index()
     {
-        this.ViewData["ToDos"] = await this.GetToDosAsync();
+        string correlationId = Guid.NewGuid().ToString();
+        this.ViewData["ToDos"] = await this.GetToDosAsync(correlationId);
         return View();
     }
 
@@ -37,20 +38,20 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    private async Task<IEnumerable<ToDo>> GetToDosAsync()
+    private async Task<IEnumerable<ToDo>> GetToDosAsync(string correlationId)
     {
-        this._logger.LogInformation("Start GetToDosAsync from controller");
+        this._logger.LogInformation("{correlationId}|Start GetToDosAsync from controller", correlationId);
         try
         {
             var day = random.Next(1, 15);
             string fromDate = $"06/{day}/2023";
-            var response = await this.toDoService.GetToDosAsync(fromDate);
-            this._logger.LogInformation("End GetToDosAsync from controller");
+            var response = await this.toDoService.GetToDosAsync(fromDate, correlationId);
+            this._logger.LogInformation("{correlationId}|End GetToDosAsync from controller", correlationId);
             return response;
         }
         catch (Exception ex)
         {
-            this._logger.LogError("An error occur when trying to get todos from ToDoService !");
+            this._logger.LogError("{correlationId}|An error occur when trying to get todos from ToDoService !", correlationId);
             SentrySdk.CaptureException(ex);
             return Enumerable.Empty<ToDo>();
         }
