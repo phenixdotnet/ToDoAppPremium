@@ -51,7 +51,9 @@ public class HomeController : Controller
         catch (Exception ex)
         {
             this._logger.LogError("{correlationId}|An error occur when trying to get todos from ToDoService: {ex}", correlationId, ex);
-            SentrySdk.CaptureException(ex);
+            SentrySdk.CaptureException(ex, s => {
+                s.SetTag("correlationId", correlationId);
+            });
             return Enumerable.Empty<ToDo>();
         }
     }

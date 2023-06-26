@@ -22,6 +22,7 @@ public class ToDoController : ControllerBase
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
+            activity?.SetTag("correlationId", correlationId);
             DateTime fd;
             try
             {
@@ -51,7 +52,7 @@ public class ToDoController : ControllerBase
 
 
         var delta = (DateTime.Now - fromDate);
-        await Task.Delay((int)delta.TotalDays * 500);
+        await Task.Delay((int)delta.TotalDays * 250);
 
         return results;
     }
