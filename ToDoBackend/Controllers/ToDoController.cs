@@ -22,8 +22,6 @@ public class ToDoController : ControllerBase
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
-            this._logger.LogInformation("{correlationId}|Start ToDoController.Get", correlationId);
-
             try
             {
                 var fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
@@ -32,9 +30,9 @@ public class ToDoController : ControllerBase
             {
                 this._logger.LogError("{correlationId}|Unable to parse the date '{fromDate}'", correlationId, fromDate);
 
-                throw new InvalidDataException("fromDate");
+                //throw new InvalidDataException("fromDate");
                 #region better
-                //throw new InvalidDataException("fromDate", $"Unable to parse the date '{fromDate}' with pattern 'dd/MM/yyyy'", correlationId);
+                throw new InvalidDataException("fromDate", $"Unable to parse the date '{fromDate}' with pattern 'dd/MM/yyyy'", correlationId);
                 #endregion
             }
 
@@ -44,7 +42,7 @@ public class ToDoController : ControllerBase
             })
             .ToArray();
 
-            this._logger.LogInformation("{correlationId}|End ToDoController.Get", correlationId);
+            this._logger.LogInformation("{correlationId}|Returning {countToDo} ToDo", correlationId, results.Length);
             return results;
         }
     }

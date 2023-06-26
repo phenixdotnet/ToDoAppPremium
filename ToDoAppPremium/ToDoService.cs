@@ -19,7 +19,6 @@ namespace ToDoAppPremium
 
 		public async Task<IEnumerable<ToDo>> GetToDosAsync(string fromDate, string correlationId)
 		{
-            this._logger.LogInformation("{correlationId}|Start GetToDosAsync", correlationId);
 			IEnumerable<ToDo>? results = null;
 
             using (var activity = source.StartActivity("ToDoService.GetToDo"))
@@ -27,7 +26,9 @@ namespace ToDoAppPremium
 				using(HttpClient client = new HttpClient())
 				{
 					client.DefaultRequestHeaders.Add("X-CorrelationId", correlationId);
-					using (var response = await client.GetAsync(BaseUrl + "/todo?fromDate=" + fromDate).ConfigureAwait(false))
+                    this._logger.LogInformation("{correlationId}|Calling ToDoService with fromDate '{fromDate}'", correlationId, fromDate);
+
+                    using (var response = await client.GetAsync(BaseUrl + "/todo?fromDate=" + fromDate).ConfigureAwait(false))
 					{
 						response?.EnsureSuccessStatusCode();
                         results = await response.Content.ReadFromJsonAsync<IEnumerable<ToDo>>().ConfigureAwait(false);
@@ -37,7 +38,6 @@ namespace ToDoAppPremium
 				}
             }
 
-            this._logger.LogInformation("{correlationId}|End GetToDosAsync", correlationId);
 			return results;
         }
 	}
