@@ -16,35 +16,44 @@ public class ToDoController : ControllerBase
     }
 
     [HttpGet(Name = "GetToDo")]
-    public IEnumerable<ToDo> Get(string fromDate)
+    public async Task<IEnumerable<ToDo>> GetAsync(string fromDate)
     {
         var correlationId = this.Request.Headers["X-CorrelationId"].ToString();
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
+            DateTime fd;
             try
             {
-                var fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
+                fd = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
             }
             catch (Exception ex)
             {
                 this._logger.LogError("{correlationId}|Unable to parse the date '{fromDate}'", correlationId, fromDate);
-
-                //throw new InvalidDataException("fromDate");
-                #region better
                 throw new InvalidDataException("fromDate", $"Unable to parse the date '{fromDate}' with pattern 'dd/MM/yyyy'", correlationId);
-                #endregion
             }
 
-            var results = Enumerable.Range(1, 5).Select(index => new ToDo
-            {
-                Title = "Task " + index
-            })
-            .ToArray();
+            this._logger.LogInformation("{correlationId}|Loading all todo since {fromDate}", correlationId, fd);
+            var results = await this.QueryDBAsync(fd, correlationId).ConfigureAwait(false);
 
-            this._logger.LogInformation("{correlationId}|Returning {countToDo} ToDo", correlationId, results.Length);
+            this._logger.LogInformation("{correlationId}|Returning {countToDo} ToDo", correlationId, results.Count());
             return results;
         }
+    }
+
+    private async Task<IEnumerable<ToDo>> QueryDBAsync(DateTime fromDate, string correlationId)
+    {
+        var results = Enumerable.Range(1, 5).Select(index => new ToDo
+        {
+            Title = "Task " + index
+        })
+            .ToArray();
+
+
+        var delta = (DateTime.Now - fromDate);
+        await Task.Delay((int)delta.TotalDays * 500);
+
+        return results;
     }
 }
 
