@@ -39,18 +39,18 @@ public class HomeController : Controller
 
     private async Task<IEnumerable<ToDo>> GetToDosAsync()
     {
-        this._logger.LogInformation("Start GetToDosAsync");
+        this._logger.LogInformation("Start GetToDosAsync from controller");
         try
         {
             var day = random.Next(1, 15);
             string fromDate = $"06/{day}/2023";
             var response = await this.toDoService.GetToDosAsync(fromDate);
-            this._logger.LogInformation("End GetToDosAsync");
+            this._logger.LogInformation("End GetToDosAsync from controller");
             return response;
         }
         catch (Exception ex)
         {
-            this._logger.LogError("An error occur when trying to get todos !");
+            this._logger.LogError("An error occur when trying to get todos from ToDoService !");
             SentrySdk.CaptureException(ex);
             return Enumerable.Empty<ToDo>();
         }
