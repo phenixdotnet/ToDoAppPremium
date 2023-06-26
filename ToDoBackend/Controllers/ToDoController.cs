@@ -30,8 +30,12 @@ public class ToDoController : ControllerBase
             }
             catch (Exception ex)
             {
-                this._logger.LogError("{correlationId}|Unable to parse the date", correlationId);
+                this._logger.LogError("{correlationId}|Unable to parse the date '{fromDate}'", correlationId, fromDate);
+
                 throw new InvalidDataException("fromDate");
+                #region better
+                //throw new InvalidDataException("fromDate", $"Unable to parse the date '{fromDate}' with pattern 'dd/MM/yyyy'", correlationId);
+                #endregion
             }
 
             var results = Enumerable.Range(1, 5).Select(index => new ToDo
