@@ -26,6 +26,7 @@ namespace ToDoAppPremium
 			{
 				using(HttpClient client = new HttpClient())
 				{
+					client.DefaultRequestHeaders.Add("X-CorrelationId", correlationId);
 					using (var response = await client.GetAsync(BaseUrl + "/todo?fromDate=" + fromDate).ConfigureAwait(false))
 					{
 						response?.EnsureSuccessStatusCode();

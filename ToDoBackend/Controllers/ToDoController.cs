@@ -18,7 +18,7 @@ public class ToDoController : ControllerBase
     [HttpGet(Name = "GetToDo")]
     public IEnumerable<ToDo> Get(string fromDate)
     {
-        var correlationId = Guid.NewGuid().ToString();
+        var correlationId = this.Request.Headers["X-CorrelationId"].ToString();
 
         using (var activity = source.StartActivity("ToDo.Get"))
         {
