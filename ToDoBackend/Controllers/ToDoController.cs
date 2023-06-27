@@ -51,7 +51,7 @@ public class ToDoController : ControllerBase
 
 
         var delta = (DateTime.Now - fromDate);
-        await Task.Delay((int)delta.TotalDays * 500);
+        await Task.Delay((int)delta.TotalDays * 250);
 
         return results;
     }

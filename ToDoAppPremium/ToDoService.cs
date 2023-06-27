@@ -25,6 +25,7 @@ namespace ToDoAppPremium
 			{
 				using(HttpClient client = new HttpClient())
 				{
+					client.Timeout = new TimeSpan(0, 0, 5);
 					client.DefaultRequestHeaders.Add("X-CorrelationId", correlationId);
                     this._logger.LogInformation("{correlationId}|Calling ToDoService with fromDate '{fromDate}'", correlationId, fromDate);
 
