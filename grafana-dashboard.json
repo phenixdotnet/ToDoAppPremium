@@ -75,7 +75,8 @@
                                 "value": 80
                             }
                         ]
-                    }
+                    },
+                    "unit": "ms"
                 },
                 "overrides": []
             },
@@ -169,7 +170,8 @@
                                 "value": 80
                             }
                         ]
-                    }
+                    },
+                    "unit": "ms"
                 },
                 "overrides": []
             },
@@ -222,12 +224,12 @@
             },
             "id": 3,
             "options": {
-                "dedupStrategy": "none",
+                "dedupStrategy": "exact",
                 "enableLogDetails": true,
                 "prettifyLogMessage": false,
                 "showCommonLabels": false,
                 "showLabels": false,
-                "showTime": false,
+                "showTime": true,
                 "sortOrder": "Descending",
                 "wrapLogMessage": false
             },
@@ -259,12 +261,12 @@
             },
             "id": 4,
             "options": {
-                "dedupStrategy": "none",
+                "dedupStrategy": "exact",
                 "enableLogDetails": true,
                 "prettifyLogMessage": false,
                 "showCommonLabels": false,
                 "showLabels": false,
-                "showTime": false,
+                "showTime": true,
                 "sortOrder": "Descending",
                 "wrapLogMessage": false
             },
@@ -299,6 +301,6 @@
     "timezone": "",
     "title": "ToDoApp",
     "uid": "c84de24f-25d8-44b1-9e48-133041ea6401",
-    "version": 4,
+    "version": 6,
     "weekStart": ""
 }
